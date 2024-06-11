@@ -1,20 +1,20 @@
-from _init_ import CURSOR, CONN 
+from _init_ import CURSOR, CONN
 
 class Contact: 
     
     all = {}
     
-    def __init__(self, name, address):
+    def __init__(self, name, address, id=None):
         self.id = id
         self.name = name
         self.address = address
 
-    def _repr_(self):
-        return f"<Contact {self.id}: {self.name}, {self.address}, {self.birthday}>"
+    def __repr__(self):
+        return f"<Contact {self.id}: {self.name}, {self.address}>"
     
     @property
     def name(self):
-        return self.__qualname__
+        return self._name
     
     @name.setter
     def name(self, name):
@@ -38,7 +38,7 @@ class Contact:
         sql = """
             CREATE TABLE IF NOT EXISTS contacts(
             id INTEGER PRIMARY KEY,
-            name TEXT
+            name TEXT,
             address TEXT)
         """
         CURSOR.execute(sql)
@@ -46,15 +46,15 @@ class Contact:
 
     @classmethod
     def drop_table(cls):
-        """ Drop the table that persists Contact instances"""
+        """Drop the table that persists Contact instances"""
         sql = """
-            Drop TABLE IF EXISTS contacts;
+            DROP TABLE IF EXISTS contacts
         """
         CURSOR.execute(sql)
         CONN.commit()
 
     def save(self):
-        """ Insert a new row with the name and address values of the current Contact instance. Update object id attribute using the primary key value of new row. Save the object in local dictionary using table row's PK as dictionary key"""
+        """Insert a new row with the name and address values of the current Contact instance. Update object id attribute using the primary key value of the new row. Save the object in local dictionary using table row's PK as dictionary key"""
         sql = """
             INSERT INTO contacts (name, address)
             VALUES (?, ?)
@@ -67,7 +67,7 @@ class Contact:
 
     @classmethod
     def create(cls, name, address):
-        """ Initialize a new Contact instance and save the object in the database"""
+        """Initialize a new Contact instance and save the object in the database"""
         contact = cls(name, address)
         contact.save()
         return contact
@@ -88,7 +88,7 @@ class Contact:
             DELETE FROM contacts
             WHERE id = ?
         """
-        CURSOR.execute(sql, (self.id))
+        CURSOR.execute(sql, (self.id,))
         CONN.commit()
         del type(self).all[self.id]
         self.id = None
@@ -109,7 +109,7 @@ class Contact:
     @classmethod
     def get_all(cls):
         """Return a list containing a Contact object per row in the table."""
-        sql= """
+        sql = """
             SELECT *
             FROM contacts
         """
@@ -117,7 +117,7 @@ class Contact:
         return [cls.instance_from_db(row) for row in rows]
     
     @classmethod
-    def find_by_id(cls, self):
+    def find_by_id(cls, id):
         """Return a Contact object corresponding to the table row matching the specified primary key."""
         sql = """
             SELECT *
@@ -129,25 +129,31 @@ class Contact:
     
     @classmethod
     def find_by_name(cls, name):
-        """Return a Contact object corresponding to the first table row matching specified name"""
+        """Return a Contact object corresponding to the first table row matching the specified name"""
         sql = """
             SELECT *
             FROM contacts
-            WHERE name is ?
+            WHERE name = ?
         """
         row = CURSOR.execute(sql, (name,)).fetchone()
         return cls.instance_from_db(row) if row else None
     
     def phone_numbers(self):
-        """Return list of phone numbers with current contact"""
+        """Return list of phone numbers with the current contact"""
         from phone_numbers import PhoneNumber
         sql = """
-            SELECT * FROM phone_numbers
+            SELECT * FROM phonenumbers
             WHERE contact_id = ?
         """
-        CURSOR.execute(sql, (self.id,),)
-
-        rows = CURSOR.fetchall()
+        rows = CURSOR.execute(sql, (self.id,)).fetchall()
         return [PhoneNumber.instance_from_db(row) for row in rows]
-        
     
+    def emails(self):
+        """Return list of emails with the current contact"""
+        from emails import Email
+        sql = """
+            SELECT * FROM emails
+            WHERE contact_id = ?
+        """
+        rows = CURSOR.execute(sql, (self.id,)).fetchall()
+        return [Email.instance_from_db(row) for row in rows]
