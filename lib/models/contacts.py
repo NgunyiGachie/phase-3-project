@@ -1,4 +1,4 @@
-from _init_ import CURSOR, CONN
+from models.__init__ import CURSOR, CONN
 
 class Contact: 
     

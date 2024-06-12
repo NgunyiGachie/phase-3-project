@@ -1,5 +1,5 @@
-from _init_ import CURSOR, CONN
-from contacts import Contact
+from models.__init__ import CURSOR, CONN
+from models.contacts import Contact
 
 class PhoneNumber: 
     
@@ -23,8 +23,8 @@ class PhoneNumber:
     
     @phone_number.setter
     def phone_number(self, phone_number):
-        if not isinstance(phone_number, int) or not phone_number:
-            raise ValueError("Phone Number must be a non-empty integer.")
+        if not isinstance(phone_number, str) or not phone_number:
+            raise ValueError("Phone Number must be a non-empty string.")
         self._phone_number = phone_number
 
     @property
@@ -54,7 +54,7 @@ class PhoneNumber:
         sql = """
             CREATE TABLE IF NOT EXISTS phonenumbers (
             id INTEGER PRIMARY KEY,
-            phone_number INTEGER,
+            phone_number TEXT,
             type TEXT,
             contact_id INTEGER,
             FOREIGN KEY (contact_id) REFERENCES contacts(id))

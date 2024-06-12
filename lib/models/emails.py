@@ -1,5 +1,5 @@
-from init import CURSOR, CONN
-from contacts import Contact
+from models.__init__ import CURSOR, CONN
+from models.contacts import Contact
 
 class Email:
     
