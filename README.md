@@ -34,15 +34,14 @@ This project is a Contact Management System that allows users to manage contacts
     cd phase-3-project
     ```
 
-2. **Set up a virtual environment:**
+2. **Install the required dependencies:**
     ```sh
-    python3 -m venv venv
-    source venv/bin/activate
+    pipenv install
     ```
 
-3. **Install the required dependencies:**
+3. 2. **Set up a virtual environment:**
     ```sh
-    pip install -r requirements.txt
+    pipenv shell
     ```
 
 4. **Set up the database:**
