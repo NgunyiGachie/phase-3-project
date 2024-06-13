@@ -39,7 +39,7 @@ This project is a Contact Management System that allows users to manage contacts
     pipenv install
     ```
 
-3. 2. **Set up a virtual environment:**
+3. **Set up a virtual environment:**
     ```sh
     pipenv shell
     ```
