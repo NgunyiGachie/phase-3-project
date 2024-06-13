@@ -140,7 +140,7 @@ class Contact:
     
     def phone_numbers(self):
         """Return list of phone numbers with the current contact"""
-        from phone_numbers import PhoneNumber
+        from models.phone_numbers import PhoneNumber
         sql = """
             SELECT * FROM phonenumbers
             WHERE contact_id = ?
@@ -150,7 +150,7 @@ class Contact:
     
     def emails(self):
         """Return list of emails with the current contact"""
-        from emails import Email
+        from models.emails import Email
         sql = """
             SELECT * FROM emails
             WHERE contact_id = ?

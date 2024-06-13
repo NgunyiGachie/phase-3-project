@@ -104,22 +104,36 @@ class Email:
         email = cls.all.get(row[0])
         if email:
             email.email = row[1]
-            email.contact_id = row[2]
+            if Contact.find_by_id(row[2]):
+                email.contact_id = row[2]
+            else:
+                print(f"Ignoring email with invalid contact_id: {row[2]}")
         else:
-            email = cls(row[1], row[2], row[0])
-            email.id = row[0]
-            cls.all[email.id] = email
+            if Contact.find_by_id(row[2]):
+                email = cls(row[1], row[2], row[0])
+                email.id = row[0]
+                cls.all[email.id] = email
+            else:
+                print(f"Ignoring email with invalid contact_id: {row[2]}")
         return email
         
     @classmethod
     def get_all(cls):
         """Return a list containing one Email object per table row"""
+        emails = []
         sql = """
             SELECT *
             FROM emails
         """
         rows = CURSOR.execute(sql).fetchall()
-        return [cls.instance_from_db(row) for row in rows]
+        for row in rows:
+            email = cls.instance_from_db(row)
+            if email:
+                emails.append(email)
+            else:
+                print(f"Ignoring email with invalid contact_id: {row}")
+        return emails
+
     
     @classmethod
     def find_by_id(cls, id):

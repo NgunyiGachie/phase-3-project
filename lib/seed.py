@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from models.__init__ import CURSOR, CONN
 from models.contacts import Contact
 from models.phone_numbers import PhoneNumber
