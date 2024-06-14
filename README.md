@@ -58,7 +58,19 @@ This project is a Contact Management System that allows users to manage contacts
 
 ### Running the CLI
 
-To run the command line interface (CLI), use the following command:
+To run the command line interface (CLI), you need to make the `cli.py` script executable and then execute it:
+
+1. **Make the script executable:**
+    ```sh
+    chmod +x lib/cli.py
+    ```
+
+2. **Run the script directly:**
+    ```sh
+    ./lib/cli.py
+    ```
+
+Alternatively, you can still run the script with Python:
 ```sh
 python lib/cli.py
 
