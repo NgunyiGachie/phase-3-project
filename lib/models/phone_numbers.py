@@ -107,10 +107,10 @@ class PhoneNumber:
 
     @classmethod
     def create(cls, phone_number, number_type, contact_id):
-        """Initialize a new PhoneNumber instance and save the object to the database"""
-        phone_number = cls(phone_number, number_type, contact_id)
-        phone_number.save()
-        return phone_number
+        """Create a new PhoneNumber instance and save it to the database"""
+        phone_number_obj = cls(phone_number=phone_number, number_type=number_type, contact_id=contact_id)
+        phone_number_obj.save()
+        return phone_number_obj
     
     @classmethod
     def instance_from_db(cls, row):
