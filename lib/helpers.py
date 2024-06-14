@@ -145,7 +145,7 @@ def update_phone_number_for_contact(contact):
             phone_number.number_type = number_type
             phone_number.update()
         else:
-            PhoneNumber.create(number=number, number_type=number_type, contact_id=contact.id)
+            PhoneNumber.create(phone_number=number, number_type=number_type, contact_id=contact.id)
         print(f'Phone number updated for {contact.name}')
 
 
